@@ -1,6 +1,8 @@
 import styles from './modal.module.scss';
 import { cross } from '@assets/svg';
 
+// TODO: could rid of body's overflow if that needed
+
 interface IModal {
 	shouldShow: boolean;
 	setShouldShow: (status: boolean) => void;
