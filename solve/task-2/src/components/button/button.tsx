@@ -3,7 +3,7 @@ import styles from './button.module.scss';
 interface IButton {
 	message: string;
 	handler: () => void;
-	style?: CSSStyleSheet;
+	style?: { [key: string]: string };
 }
 
 const Button: React.FC<IButton> = ({ message, handler, style = {} }) => {
