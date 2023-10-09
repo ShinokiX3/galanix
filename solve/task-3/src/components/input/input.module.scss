@@ -1,0 +1,27 @@
+.wrapper {
+	position: relative;
+}
+
+.initial {
+	background-color: transparent;
+	padding: 10px;
+	border: 2px solid lightblue;
+	border-radius: 0.2rem;
+	font-size: 13px;
+
+	&:focus {
+		outline: 2px solid orange;
+	}
+}
+
+.icon {
+	position: absolute;
+	left: 10px;
+	top: 50%;
+	width: 20px;
+	transform: translate(0, -50%);
+}
+
+.p_left {
+	padding-left: 35px;
+}

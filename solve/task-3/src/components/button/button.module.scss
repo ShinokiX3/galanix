@@ -1,0 +1,14 @@
+.initial {
+	cursor: pointer;
+	background-color: transparent;
+	padding: 5px 10px;
+	border: 2px solid lightblue;
+	border-radius: 0.2rem;
+	transition: border-color, color 0.2s ease;
+	color: gray;
+
+	&:hover {
+		color: orange;
+		border-color: orange;
+	}
+}
