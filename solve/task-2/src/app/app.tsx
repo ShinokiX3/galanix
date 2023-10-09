@@ -46,11 +46,14 @@ const App = () => {
 
 	useEffect(() => {
 		const l_images = localStorage.getItem('images');
-		if (!l_images) {
-			setImages(e_images);
-			localStorage.setItem('images', JSON.stringify(e_images));
-		} else setImages(JSON.parse(l_images));
+		if (!l_images) setImages(e_images);
+		else setImages(JSON.parse(l_images));
 	}, []);
+
+	useEffect(() => {
+		if (images.length > 0)
+			localStorage.setItem('images', JSON.stringify(images));
+	}, [images]);
 
 	const handleModalImage = (title: string, src: string) => {
 		setImage({ title, src });
@@ -66,13 +69,9 @@ const App = () => {
 			([previousTitle, _]) => previousTitle !== title
 		);
 		setImages(newImages);
-		localStorage.setItem('images', JSON.stringify(newImages));
 	};
 
-	const handleRestoreImages = () => {
-		setImages(e_images);
-		localStorage.setItem('images', JSON.stringify(e_images));
-	};
+	const handleRestoreImages = () => setImages(e_images);
 
 	return (
 		<>
