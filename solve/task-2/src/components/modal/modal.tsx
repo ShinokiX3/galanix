@@ -1,5 +1,5 @@
 import styles from './modal.module.scss';
-import cross from '@assets/svg';
+import { cross } from '@assets/svg';
 
 interface IModal {
 	shouldShow: boolean;
@@ -13,7 +13,7 @@ const Modal: React.FC<IModal> = ({ shouldShow, setShouldShow, children }) => {
 			<div onClick={(e) => e.stopPropagation()} className={styles.content}>
 				{children}
 				<img
-					src={cross.cross}
+					src={cross}
 					alt="cross"
 					className={styles.cross}
 					onClick={() => setShouldShow(false)}
