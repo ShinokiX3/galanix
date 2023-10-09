@@ -1,0 +1,41 @@
+.wrapper {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba($color: #000000, $alpha: 0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	animation: fade 0.2s ease 0s normal none;
+}
+
+.content {
+	position: relative;
+
+	.cross {
+		cursor: pointer;
+		position: absolute;
+		width: 20px;
+		top: 15px;
+		right: 15px;
+		border-radius: 50%;
+		padding: 5px;
+		transition: background-color 0.2s ease;
+
+		&:hover {
+			background-color: white;
+		}
+	}
+}
+
+@keyframes fade {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
