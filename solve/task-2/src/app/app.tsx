@@ -5,6 +5,7 @@ import { cross } from '@assets/svg';
 import { useEffect, useState } from 'react';
 import { getLocaleDate } from '@/utils/getLocaleDate';
 import { createPortal } from 'react-dom';
+
 import Modal from '@/components/modal/modal';
 import Button from '@/components/button/button';
 
@@ -32,6 +33,20 @@ const Item: React.FC<IItem> = ({ title, src, handleImage, handleCross }) => {
 				alt="cross"
 				onClick={(e) => handleCross(e, title)}
 			/>
+		</div>
+	);
+};
+
+interface IHeader {
+	quantity: number;
+	date: string;
+}
+
+const Header: React.FC<IHeader> = ({ quantity, date }) => {
+	return (
+		<div className={styles.header}>
+			<p>Images: {quantity}</p>
+			<p>Date: {date}</p>
 		</div>
 	);
 };
@@ -75,10 +90,7 @@ const App = () => {
 
 	return (
 		<>
-			<div className={styles.header}>
-				<p>Images {images.length}</p>
-				<p>Date {getLocaleDate()}</p>
-			</div>
+			<Header quantity={images.length} date={getLocaleDate()} />
 			<div className={styles.wrapper}>
 				<div className={styles.container}>
 					{images.map(([title, src]) => (
