@@ -1,6 +1,5 @@
-import clsx from 'clsx';
 import styles from './input.module.scss';
-
+import clsx from 'clsx';
 interface IInput {
 	value: string;
 	setValue: (e: React.ChangeEvent<HTMLInputElement>) => void;

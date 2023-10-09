@@ -1,65 +1,37 @@
 import styles from './app.module.scss';
 import { useEffect, useState } from 'react';
+import { Button, Input, Table } from '@/components';
 
-import Input from '@/components/input/input';
-import Button from '@/components/button/button';
-
-import { magnifying } from '@/assets/images';
 import UniversityService from '@/services/UniversityService';
+
 import { IUniversity } from '@/types/university';
-
-interface ITable {
-	universities: IUniversity[] | [];
-}
-
-const Table: React.FC<ITable> = ({ universities }) => {
-	return (
-		<table>
-			<thead>
-				<tr>
-					<th>Index</th>
-					<th>Name</th>
-					<th>Domains</th>
-					<th>Country</th>
-					<th>Aplha two code</th>
-					<th>State province</th>
-					<th>Web pages</th>
-				</tr>
-			</thead>
-			<tbody>
-				{universities.map((university, index) => (
-					<tr key={university.name}>
-						<td>{index + 1}</td>
-						<td>{university.name}</td>
-						<td>{university.domains}</td>
-						<td>{university.country}</td>
-						<td>{university.alpha_two_code}</td>
-						<td>{university['state-province'] || 'Null'}</td>
-						<td>
-							<a href={university.web_pages[0]}>{university.web_pages[0]}</a>
-						</td>
-					</tr>
-				))}
-			</tbody>
-		</table>
-	);
-};
+import { magnifying } from '@/assets/images';
 
 const App = () => {
 	const [country, setCountry] = useState<string>('');
-	const [offset, setOffset] = useState<number>(0);
-	const [limit, setLimit] = useState<number>(10);
 	const [universities, setUniversities] = useState<IUniversity[]>([]);
+
+	const [selected, setSelected] = useState<string[]>([]);
+
+	const [offset, setOffset] = useState<number>(0);
+	const [limit] = useState<number>(10);
 
 	const fetchUniversities = async (country: string) => {
 		return await UniversityService.getByQueries(country, offset, limit);
 	};
 
-	const resetUniversities = () => {
-		setUniversities([]);
-		setCountry('');
-		setOffset(0);
-	};
+	useEffect(() => {
+		(async () => {
+			const selected = localStorage.getItem('selected');
+			const country = localStorage.getItem('country');
+
+			if (selected) setSelected(JSON.parse(selected));
+			if (country) {
+				setCountry(country);
+				setUniversities(await fetchUniversities(country));
+			}
+		})();
+	}, []);
 
 	useEffect(() => {
 		(async () => {
@@ -70,8 +42,38 @@ const App = () => {
 		})();
 	}, [offset]);
 
+	useEffect(() => {
+		if (selected.length > 0)
+			localStorage.setItem('selected', JSON.stringify(selected));
+	}, [selected]);
+
+	// TODO: could use react context or redux
+
+	const handleCheckbox = (name: string) => {
+		setSelected((prev) =>
+			prev.some((p_name) => p_name === name)
+				? prev.filter((s_name) => s_name !== name)
+				: [...prev, name]
+		);
+	};
+
+	const send = async () => {
+		setUniversities(await fetchUniversities(country));
+		localStorage.setItem('country', country);
+	};
+
+	const reset = () => {
+		setUniversities([]);
+		setCountry('');
+		setOffset(0);
+		localStorage.setItem('country', '');
+	};
+
 	return (
-		<div>
+		<div className={styles.wrapper}>
+			<div className={styles.header}>
+				<p>Selected quantity: {selected.length}</p>
+			</div>
 			<form
 				className={styles.form}
 				onSubmit={(e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) =>
@@ -84,17 +86,16 @@ const App = () => {
 					placeholder="Input your country..."
 					ico={magnifying}
 				/>
-				<Button
-					message="Send"
-					handler={async () =>
-						setUniversities(await fetchUniversities(country))
-					}
-				/>
-				<Button message="Reset" handler={() => resetUniversities()} />
+				<Button message="Send" handler={send} />
+				<Button message="Reset" handler={reset} />
 			</form>
 			{universities.length > 0 ? (
 				<>
-					<Table universities={universities} />
+					<Table
+						universities={universities}
+						selected={selected}
+						handler={handleCheckbox}
+					/>
 					<Button
 						message="Load more..."
 						handler={() => setOffset(() => offset + limit)}

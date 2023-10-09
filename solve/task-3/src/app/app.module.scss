@@ -1,3 +1,15 @@
+.header {
+	width: 100%;
+	font-size: 14px;
+	text-align: center;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
 .controls {
 	display: flex;
 	gap: 15px;
@@ -5,5 +17,6 @@
 
 .form {
 	display: flex;
+	justify-content: center;
 	gap: 15px;
 }
